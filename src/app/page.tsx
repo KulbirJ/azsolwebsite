@@ -1,8 +1,13 @@
 import BlogFeed from '@/components/BlogFeed';
 import { getAllPosts } from '@/lib/blog';
+import { getAllProducts } from '@/lib/products';
+import { postToFeedItem, productToFeedItem } from '@/lib/feed';
 
 export default function Home() {
-  const posts = getAllPosts();
+  const feed = [
+    ...getAllPosts().map(postToFeedItem),
+    ...getAllProducts().map(productToFeedItem),
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <main className="min-h-screen bg-gray-900 text-white font-sans">
@@ -44,14 +49,14 @@ export default function Home() {
             <div className="text-sm md:text-base text-gray-300 leading-relaxed space-y-3">
               <p>Welcome to my blog.</p>
               <p>
-                I’ve always been someone who likes to bridge the gap between high-level security and actual engineering. While I spend my days as a Security Architect, I’ve never lost that "builder" itch—the kind of curiosity that makes me want to see exactly how a system works under the hood.
+                I’ve always been someone who likes to bridge the gap between high-level security and actual engineering. While I spend my days as a Security Architect, I’ve never lost that "builder" itch the kind of curiosity that makes me want to see exactly how a system works under the hood.
               </p>
               <p>
                 My background is a mix of cybersecurity and cloud engineering, and I’ve spent a lot of time deploying AI solutions across Azure, AWS, and Oracle Cloud. For me, it’s not just about making a tool work; it’s about making sure it’s secure, scalable, and actually worth the resources put into it.
               </p>
               <p>
                 My daily role focuses on the big picture, which doesn't always provide the space to experiment with every niche tool or idea I come across. That’s why I started this blog. It’s a place for me to document the projects I’m tinkering with, the logic behind the things I build, and the inevitable lessons I learn along the way.</p>
-              <p>Thanks for stopping by—I hope you find something here that helps with your own projects.</p>
+              <p>Thanks for stopping by. I hope you find something here that helps with your own projects.</p>
             </div>
 
             {/* Social links - TODO: Replace # with your actual profile URLs */}
@@ -78,7 +83,7 @@ export default function Home() {
             Latest Posts
           </p>
         </div>
-        <BlogFeed posts={posts} />
+        <BlogFeed items={feed} />
       </section>
 
       {/* Footer */}
